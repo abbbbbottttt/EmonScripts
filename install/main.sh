@@ -49,7 +49,7 @@ fi
 
 source load_config.sh
 
-if [ "$docker" = false ]; then
+if [ "$docker" = true ]; then
     useradd $user && echo $user | passwd $user --stdin
 fi
 
