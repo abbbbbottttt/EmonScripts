@@ -8,19 +8,19 @@ sudo apt-get update -y
 sudo apt-get install -y git-core
 
 sudo mkdir $openenergymonitor_dir
-sudo chown $user $openenergymonitor_dir
+if [ "$user" != "root" ]; then
+    sudo chown $user $openenergymonitor_dir
+fi
 
 sudo mkdir $emoncms_dir
-sudo chown $user $emoncms_dir
+if [ "$user" != "root" ]; then
+    sudo chown $user $emoncms_dir
+fi
 
 cd $openenergymonitor_dir
 
-git clone https://github.com/openenergymonitor/EmonScripts.git
+git clone https://github.com/abbbbbottttt/EmonScripts.git
 cd $openenergymonitor_dir/EmonScripts
-git checkout stable
-
-cd $openenergymonitor_dir/EmonScripts/install
-./main.sh
-cd
+git checkout docker
 
 rm init.sh

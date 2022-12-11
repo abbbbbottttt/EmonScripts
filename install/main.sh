@@ -1,3 +1,4 @@
+#!/bin/bash
 # --------------------------------------------------------------------------------
 # RaspberryPi Strech Build Script
 # Emoncms, Emoncms Modules, EmonHub & dependencies
@@ -13,37 +14,40 @@
 # - emonhub installer
 # Format as documentation
 
+echo "-------------------------------------------------------------"
+echo "EmonSD Install"
+echo "-------------------------------------------------------------"
+
 # fix interactive popup that keeps asking for service restart
 if [ -f /etc/needrestart/needrestart.conf ]; then
   sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
 fi
 
-#!/bin/bash
 if [ ! -f config.ini ]; then
     cp emonsd.config.ini config.ini
+
+    echo "Warning: The default configuration of this script applies"
+    echo "significant modification to the underlying system!"
+
+    if [ "$docker" = false ]; then
+        echo ""
+        read -p "Would you like to review the build script config before starting? (y/n) " start_confirm
+
+        if [ "$start_confirm" != "n" ] && [ "$start_confirm" != "N" ]; then
+            echo ""
+            echo "You selected 'yes' to review config"
+            echo "Please review config.ini and restart the build script to continue"
+            echo ""
+            echo "    cd $openenergymonitor_dir/EmonScripts/install/"
+            echo "    nano config.ini"
+            echo "    ./main.sh"
+            echo ""
+            exit 0
+        fi
+    fi
 fi
+
 source load_config.sh
-    
-echo "-------------------------------------------------------------"
-echo "EmonSD Install"
-echo "-------------------------------------------------------------"
-
-echo "Warning: The default configuration of this script applies"
-echo "significant modification to the underlying system!"
-echo ""
-read -p "Would you like to review the build script config before starting? (y/n) " start_confirm
-
-if [ "$start_confirm" != "n" ] && [ "$start_confirm" != "N" ]; then
-    echo ""
-    echo "You selected 'yes' to review config"
-    echo "Please review config.ini and restart the build script to continue"
-    echo ""
-    echo "    cd $openenergymonitor_dir/EmonScripts/install/"
-    echo "    nano config.ini"
-    echo "    ./main.sh"
-    echo ""
-    exit 0
-fi
 
 if [ "$apt_get_upgrade_and_clean" = true ]; then
     echo "apt-get update"
@@ -60,12 +64,14 @@ if [ "$apt_get_upgrade_and_clean" = true ]; then
 
     # Needed on stock raspbian lite 19th March 2019
     sudo apt --fix-broken install
-    
-    echo ""
-    echo "Important: Did you get a request to reboot your machine, if so we recommend you do this now."
-    read -p "Would you like to exit installation to reboot your machine? (y/n) " reboot_confirm
-    if [ "$reboot_confirm" != "n" ] && [ "$reboot_confirm" != "N" ]; then
-        exit 0
+
+    if [ "$docker" = false ]; then
+        echo ""
+        echo "Important: Did you get a request to reboot your machine, if so we recommend you do this now."
+        read -p "Would you like to exit installation to reboot your machine? (y/n) " reboot_confirm
+        if [ "$reboot_confirm" != "n" ] && [ "$reboot_confirm" != "N" ]; then
+            exit 0
+        fi
     fi
 fi
 
@@ -84,7 +90,7 @@ if [ "$install_mosquitto" = true ]; then $openenergymonitor_dir/EmonScripts/inst
 if [ "$install_emoncms_core" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_core.sh; fi
 if [ "$install_emoncms_modules" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_modules.sh; fi
 
-if [ "$emonSD_pi_env" = "1" ]; then
+if [ "$docker" = false ] && [ "$emonSD_pi_env" = "1" ]; then
     if [ "$install_emoncms_emonpi_modules" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_emonpi_modules.sh; fi
     if [ "$install_emonhub" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonhub.sh; fi
     if [ "$install_firmware" = true ]; then $openenergymonitor_dir/EmonScripts/install/firmware.sh; fi
