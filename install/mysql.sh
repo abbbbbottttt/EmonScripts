@@ -6,7 +6,7 @@ echo "Setup the Mariadb server (MYSQL)"
 echo "-------------------------------------------------------------"
 sudo apt-get install -y mariadb-server mariadb-client
 
-sudo systemctl start mariadb
+sudo service mariadb start
 
 # Secure mysql
 echo "- Secure MYSQL"
