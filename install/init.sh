@@ -7,6 +7,8 @@ emoncms_dir=/opt/emoncms
 sudo apt-get update -y
 sudo apt-get install -y git-core
 
+echo $user
+
 sudo mkdir $openenergymonitor_dir
 if [ "$user" != "root" ]; then
     sudo chown $user $openenergymonitor_dir
@@ -22,5 +24,3 @@ cd $openenergymonitor_dir
 git clone https://github.com/abbbbbottttt/EmonScripts.git
 cd $openenergymonitor_dir/EmonScripts
 git checkout docker
-
-rm init.sh
