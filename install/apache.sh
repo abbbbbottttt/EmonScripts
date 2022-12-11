@@ -20,5 +20,8 @@ sudo cp $openenergymonitor_dir/EmonScripts/defaults/apache2/emoncms.conf /etc/ap
 sudo a2dissite 000-default.conf
 sudo a2ensite emoncms
 
-sudo systemctl restart apache2
-
+if [ "$docker" = false ]; then
+    sudo service apache2 restart
+else
+    sudo systemctl restart apache2
+fi

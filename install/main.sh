@@ -49,6 +49,10 @@ fi
 
 source load_config.sh
 
+if [ "$docker" = false ]; then
+    useradd $user && echo $user | passwd $user --stdin
+fi
+
 if [ "$apt_get_upgrade_and_clean" = true ]; then
     echo "apt-get update"
     sudo apt-get update -y

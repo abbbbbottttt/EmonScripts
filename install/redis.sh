@@ -28,4 +28,9 @@ sudo pip3 install redis
 sudo sed -i "s/^save 900 1/#save 900 1/" /etc/redis/redis.conf
 sudo sed -i "s/^save 300 1/#save 300 1/" /etc/redis/redis.conf
 sudo sed -i "s/^save 60 1/#save 60 1/" /etc/redis/redis.conf
-sudo systemctl restart redis-server
+
+if [ "$docker" = false ]; then
+    sudo systemctl restart redis-server
+else
+    sudo service redis-server restart
+fi
