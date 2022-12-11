@@ -10,12 +10,12 @@ sudo apt-get install -y git-core
 echo $user
 
 sudo mkdir $openenergymonitor_dir
-if [ "$user" != "root" ]; then
+if [ "$user" != "" ]; then
     sudo chown $user $openenergymonitor_dir
 fi
 
 sudo mkdir $emoncms_dir
-if [ "$user" != "root" ]; then
+if [ "$user" != "" ]; then
     sudo chown $user $emoncms_dir
 fi
 
