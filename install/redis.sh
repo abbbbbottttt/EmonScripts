@@ -29,8 +29,8 @@ sudo sed -i "s/^save 900 1/#save 900 1/" /etc/redis/redis.conf
 sudo sed -i "s/^save 300 1/#save 300 1/" /etc/redis/redis.conf
 sudo sed -i "s/^save 60 1/#save 60 1/" /etc/redis/redis.conf
 
-if [ "$docker" = false ]; then
-    sudo systemctl restart redis-server
-else
+if [ "$docker" = true ]; then
     sudo service redis-server restart
+else
+    sudo systemctl restart redis-server
 fi

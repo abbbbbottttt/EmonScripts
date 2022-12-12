@@ -23,27 +23,25 @@ if [ -f /etc/needrestart/needrestart.conf ]; then
   sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
 fi
 
-if [ ! -f config.ini ]; then
+if [ "$docker" = false ] && [ ! -f config.ini ]; then
     cp emonsd.config.ini config.ini
 
     echo "Warning: The default configuration of this script applies"
     echo "significant modification to the underlying system!"
 
-    if [ "$docker" = false ]; then
-        echo ""
-        read -p "Would you like to review the build script config before starting? (y/n) " start_confirm
+    echo ""
+    read -p "Would you like to review the build script config before starting? (y/n) " start_confirm
 
-        if [ "$start_confirm" != "n" ] && [ "$start_confirm" != "N" ]; then
-            echo ""
-            echo "You selected 'yes' to review config"
-            echo "Please review config.ini and restart the build script to continue"
-            echo ""
-            echo "    cd $openenergymonitor_dir/EmonScripts/install/"
-            echo "    nano config.ini"
-            echo "    ./main.sh"
-            echo ""
-            exit 0
-        fi
+    if [ "$start_confirm" != "n" ] && [ "$start_confirm" != "N" ]; then
+        echo ""
+        echo "You selected 'yes' to review config"
+        echo "Please review config.ini and restart the build script to continue"
+        echo ""
+        echo "    cd $openenergymonitor_dir/EmonScripts/install/"
+        echo "    nano config.ini"
+        echo "    ./main.sh"
+        echo ""
+        exit 0
     fi
 fi
 

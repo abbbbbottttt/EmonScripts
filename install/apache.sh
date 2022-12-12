@@ -20,7 +20,7 @@ sudo cp $openenergymonitor_dir/EmonScripts/defaults/apache2/emoncms.conf /etc/ap
 sudo a2dissite 000-default.conf
 sudo a2ensite emoncms
 
-if [ "$docker" = false ]; then
+if [ "$docker" = true ]; then
     sudo service apache2 restart
 else
     sudo systemctl restart apache2
