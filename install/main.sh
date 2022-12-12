@@ -92,6 +92,10 @@ if [ "$install_mosquitto" = true ]; then $openenergymonitor_dir/EmonScripts/inst
 if [ "$install_emoncms_core" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_core.sh; fi
 if [ "$install_emoncms_modules" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_modules.sh; fi
 
+if [ "$docker" = true ] && [ "$install_apache" = true ]; then
+    sudo service apache2 restart
+fi
+
 if [ "$docker" = false ] && [ "$emonSD_pi_env" = "1" ]; then
     if [ "$install_emoncms_emonpi_modules" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_emonpi_modules.sh; fi
     if [ "$install_emonhub" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonhub.sh; fi
